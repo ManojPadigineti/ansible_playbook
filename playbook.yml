@@ -1,5 +1,6 @@
 - name: Ansible Playbook
-  hosts: "{{ server }}"
+  hosts: localhost
+  connection: local
   become: true
   vars:
     var_file: "{{ var_file }}"
@@ -9,3 +10,4 @@
     - "{{ role_name }}"
 
 # git pull ; ansible-playbook -i inv.txt playbook.yml -e var_file=frontend
+# ansible-playbook -i localhost  playbook.yml -e var_file=mysql - Using terraform
