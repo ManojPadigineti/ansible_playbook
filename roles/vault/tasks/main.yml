@@ -1,7 +1,23 @@
-- name: hasicord vault fetch details
-  hosts: localhost
-  connection: local
-  tasks: 
-    - name: Fetch hasicorp vault
-      ansible.builtin.debug:
-         msg: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=manoj/data/credentials:ec2-user token={{ token }} url=https://98.80.223.12:8200 validate_certs=false') }}"
+- name: Copy hashicorp_repo
+  ansible.builtin.import_role:
+    name: repo_copy
+    tasks_from: main.yml
+
+- name: install vault using dnf
+  ansible.builtin.import_role:
+    name: dnf_modules
+    tasks_from: main.yml
+
+- name: remove existing vault.hcl
+  ansible.builtin.shell:
+    cmd: "rm -rf /etc/vault.d/vault.hcl ; pip install hvac"
+
+- name: Template a file to /etc/file.conf
+  ansible.builtin.template:
+    src: vault.hcl
+    dest: /etc/vault.d/
+
+- name: systemd start vault
+  ansible.builtin.import_role:
+    name: systemd
+    tasks_from: main.yml

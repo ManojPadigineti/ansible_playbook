@@ -10,4 +10,3 @@
     - "{{ role_name }}"
 
 # git pull ; ansible-playbook -i inv.txt playbook.yml -e var_file=frontend
-# ansible-playbook -i localhost  playbook.yml -e var_file=mysql - Using terraform
